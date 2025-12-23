@@ -1,3 +1,20 @@
+:root {
+  --bg: #f4f4f4;
+  --card: #ffffff;
+  --text: #111;
+  --task: #eeeeee;
+  --primary: #007aff;
+}
+
+body.dark {
+  --bg: #121212;
+  --card: #1e1e1e;
+  --text: #f5f5f5;
+  --task: #2a2a2a;
+  --primary: #0a84ff;
+}
+
+
 * {
   margin: 0;
   padding: 0;
@@ -5,25 +22,45 @@
   font-family: Arial, sans-serif;
 }
 
+
 body {
   min-height: 100vh;
+  background: var(--bg);
   display: flex;
-  justify-content: center;
   align-items: center;
-  background: #f4f4f4;
+  justify-content: center;
+  transition: background 0.3s;
 }
+
 
 .app {
-  width: 320px;
-  background: white;
+  width: 340px;
+  background: var(--card);
   padding: 20px;
-  border-radius: 10px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  color: var(--text);
 }
 
-h1 {
-  text-align: center;
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 15px;
 }
+
+header h1 {
+  font-size: 22px;
+}
+
+header button {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+}
+
 
 .input-group {
   display: flex;
@@ -31,13 +68,16 @@ h1 {
   margin-bottom: 15px;
 }
 
-input {
+.input-group input {
   flex: 1;
   padding: 8px;
 }
 
-button {
-  padding: 8px 12px;
+.input-group button {
+  padding: 8px 14px;
+  background: var(--primary);
+  color: white;
+  border: none;
   cursor: pointer;
 }
 
@@ -46,21 +86,30 @@ ul {
 }
 
 li {
+  background: var(--task);
+  padding: 8px 10px;
+  margin-bottom: 8px;
   display: flex;
   justify-content: space-between;
-  padding: 8px;
-  margin-bottom: 6px;
-  background: #eee;
   cursor: pointer;
 }
 
 li.completed {
   text-decoration: line-through;
-  color: gray;
+  opacity: 0.6;
 }
 
+li button {
+  background: none;
+  border: none;
+  color: red;
+  cursor: pointer;
+}
+
+
 footer {
-  margin-top: 10px;
+  margin-top: 12px;
   font-size: 12px;
   text-align: center;
+  opacity: 0.7;
 }
