@@ -1,15 +1,8 @@
 const taskInput = document.getElementById("taskInput");
 const taskList = document.getElementById("taskList");
 const addBtn = document.getElementById("addBtn");
-const themeToggle = document.getElementById("themeToggle");
 
 let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
-let theme = localStorage.getItem("theme") || "light";
-
-if (theme === "dark") {
-  document.body.classList.add("dark");
-  themeToggle.textContent = "☀️";
-}
 
 function saveTasks() {
   localStorage.setItem("tasks", JSON.stringify(tasks));
@@ -20,23 +13,33 @@ function renderTasks() {
 
   tasks.forEach((task, index) => {
     const li = document.createElement("li");
-    if (task.completed) li.classList.add("completed");
+    li.textContent = task.text;
 
-    const span = document.createElement("span");
-    span.textContent = task.text;
-    span.onclick = () => toggleTask(index);
+    if (task.completed) {
+      li.classList.add("completed");
+    }
 
-    const del = document.createElement("button");
-    del.textContent = "✕";
-    del.onclick = () => deleteTask(index);
+    li.onclick = () => {
+      tasks[index].completed = !tasks[index].completed;
+      saveTasks();
+      renderTasks();
+    };
 
-    li.appendChild(span);
-    li.appendChild(del);
+    const deleteBtn = document.createElement("button");
+    deleteBtn.textContent = "X";
+    deleteBtn.onclick = (e) => {
+      e.stopPropagation();
+      tasks.splice(index, 1);
+      saveTasks();
+      renderTasks();
+    };
+
+    li.appendChild(deleteBtn);
     taskList.appendChild(li);
   });
 }
 
-function addTask() {
+addBtn.addEventListener("click", () => {
   const text = taskInput.value.trim();
   if (!text) return;
 
@@ -44,31 +47,6 @@ function addTask() {
   taskInput.value = "";
   saveTasks();
   renderTasks();
-}
-
-function toggleTask(index) {
-  tasks[index].completed = !tasks[index].completed;
-  saveTasks();
-  renderTasks();
-}
-
-function deleteTask(index) {
-  tasks.splice(index, 1);
-  saveTasks();
-  renderTasks();
-}
-
-themeToggle.addEventListener("click", () => {
-  document.body.classList.toggle("dark");
-  const isDark = document.body.classList.contains("dark");
-
-  themeToggle.textContent = isDark ? "☀️" : "🌙";
-  localStorage.setItem("theme", isDark ? "dark" : "light");
-});
-
-addBtn.addEventListener("click", addTask);
-taskInput.addEventListener("keypress", e => {
-  if (e.key === "Enter") addTask();
 });
 
 renderTasks();
